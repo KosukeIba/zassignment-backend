@@ -4,6 +4,7 @@ package com.zippractice1.entity
 import lombok.Getter
 import lombok.Setter
 import org.springframework.data.annotation.Id
+import org.springframework.web.multipart.MultipartFile
 import java.sql.Timestamp
 
 // this is for interaction with datastore not for firestore
@@ -19,7 +20,7 @@ import java.sql.Timestamp
 
 @Getter
 @Setter
-public class Photo {
+public class PhotoPost {
 
     var id : String = "";
     var uri : String = "";
@@ -27,7 +28,14 @@ public class Photo {
     var ownerId : String = "";
     var timestamp : com.google.cloud.Timestamp? = null
 
-
-
 }
 
+@Getter
+@Setter
+public class PhotoFile {
+
+    var file : MultipartFile? = null;
+    var description : String = "";
+    var ownerId : String = "";
+
+}
