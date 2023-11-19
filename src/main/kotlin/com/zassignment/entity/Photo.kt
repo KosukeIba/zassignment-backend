@@ -5,7 +5,6 @@ import lombok.Getter
 import lombok.Setter
 import org.springframework.data.annotation.Id
 import org.springframework.web.multipart.MultipartFile
-import java.sql.Timestamp
 
 // this is for interaction with datastore not for firestore
 //@Entity
@@ -32,6 +31,7 @@ public class PhotoPost {
 
 @Getter
 @Setter
+// MultiParFile cannot be treated in Entity. need to find a way to convert byte and store into storage.
 public class PhotoFile {
 
     var file : MultipartFile? = null;
