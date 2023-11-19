@@ -24,8 +24,6 @@ class FirebaseInit {
             FirebaseApp.initializeApp(options)
         }
 
-//            val db : Firestore = FirestoreClient.getFirestore();
-//            return db
 
     }
 }
