@@ -22,7 +22,11 @@ class FirebaseInit {
                 .build()
 
             FirebaseApp.initializeApp(options)
+        } else {
+            FirebaseApp.initializeApp();
         }
+
+
 
 
     }
