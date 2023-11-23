@@ -19,6 +19,8 @@ class PhotoService(private val ctx : ApplicationContext) {
     fun getPhoto(): ArrayList<Map<String, *>> {
         val db : Firestore = FirestoreClient.getFirestore();
 
+        // DAO start
+
         val query : ApiFuture<QuerySnapshot> = db.collection("photo").orderBy("timestamp").get();
         val querySnapshot : QuerySnapshot = query.get();
         val documents : List<QueryDocumentSnapshot> = querySnapshot.documents
@@ -26,32 +28,37 @@ class PhotoService(private val ctx : ApplicationContext) {
         var ary : ArrayList<Map<String, *>> = arrayListOf();
         documents.forEach { document ->
             run {
-                System.out.println((document.data))
-                val jsonResult : String = jacksonObjectMapper().writeValueAsString(document.data);
-
                 ary.add(document.data as Map<String, *>);
             }
         }
 
+        // DAO end
+
         return ary
     }
 
-    fun createNewPost(file: MultipartFile, description : String, ownerId : String): ApiFuture<DocumentReference>? {
+    // take posted photo info from frontend;
+    // save the photo to cloud store;
+    // save post info to firestore;
+    fun createNewPost(file: MultipartFile, description : String, ownerId : String): String {
         val bucket = "gs://zippractice1-photos/images"
         val id = UUID.randomUUID().toString()
         val uri = "$bucket/$id"  // create uri to store file data in cloudstorage
         val db : Firestore = FirestoreClient.getFirestore();
 
+        // DAO for cloud storage start
+
         // get resource location from application server by designating file path
         val gcs = ctx.getResource(uri) as WritableResource
 
         // store file in the location designated by the URL
-
         file.inputStream.use { input ->
             gcs.outputStream.use { output ->
                 input.copyTo(output)
             }
         }
+
+        // DAO for cloud storage end
 
         val t = now()
 
@@ -64,9 +71,13 @@ class PhotoService(private val ctx : ApplicationContext) {
 
         println(photoPost)
 
-        val result : ApiFuture<DocumentReference>? = db.collection("photo").add(photoPost)
+        // DAO for firestore start
 
-        return result
+        val result : String = db.collection("photo").add(photoPost).get().id;
+
+        // DAO for firestore end
+
+        return result // return document Id for a post
     }
 
     fun now(): com.google.cloud.Timestamp {
