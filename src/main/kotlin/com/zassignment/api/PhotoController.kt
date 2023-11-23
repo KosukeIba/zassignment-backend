@@ -16,12 +16,13 @@ class PhotoController (private val photoService: PhotoService) {
         return photoService.getPhoto()
     }
 
+    @CrossOrigin(origins = ["http://localhost:5173", "https://zippracitce.web.app/"])
     @PostMapping("/post")
     fun putNewPost(
                    @RequestPart("file") file : MultipartFile,
                    @RequestPart("description") description : String,
                    @RequestPart("ownerId") ownerId : String
-    ): ApiFuture<DocumentReference>? {
+    ): String {
         return photoService.createNewPost(file, description, ownerId)
     }
 
