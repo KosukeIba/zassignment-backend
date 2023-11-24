@@ -10,18 +10,19 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 class PhotoController (private val photoService: PhotoService) {
 
-    @CrossOrigin(origins = ["http://localhost:5173", "https://zippracitce.web.app/"])
+    @CrossOrigin(origins = ["http://localhost:5173", "https://data-honor-403613.web.app"])
     @GetMapping("/image/db")
     fun getAll(): ArrayList<Map<String, *>> {
         return photoService.getPhoto()
     }
 
+    @CrossOrigin(origins = ["http://localhost:5173", "https://data-honor-403613.web.app"])
     @PostMapping("/post")
     fun putNewPost(
                    @RequestPart("file") file : MultipartFile,
                    @RequestPart("description") description : String,
                    @RequestPart("ownerId") ownerId : String
-    ): ApiFuture<DocumentReference>? {
+    ): String {
         return photoService.createNewPost(file, description, ownerId)
     }
 

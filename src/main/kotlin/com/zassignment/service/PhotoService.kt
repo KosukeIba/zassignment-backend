@@ -64,7 +64,7 @@ class PhotoService(private val ctx : ApplicationContext) {
 
         val photoPost = PhotoPost();
         photoPost.id = id;
-        photoPost.uri = uri;
+        photoPost.uri = "/images/$id";
         photoPost.label = description;
         photoPost.ownerId = ownerId;
         photoPost.timestamp = t
